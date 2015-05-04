@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Laravel学习笔记（一）--- 依赖注入和IoC容器 | 这样也可以！！！</title>
+  <meta name="author" content="han">
+  
+  <meta name="description" content="依赖注入（DI）假设实现一个汽车类Car，它依赖一个引擎类Engine:123456789class Car&amp;#123;    public function go()    &amp;#123;        $engine = new Engine();        $engine-&amp;gt;start();        echo &quot;go&quot;;    &amp;#125;&amp;#125;">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Laravel学习笔记（一）--- 依赖注入和IoC容器"/>
+  <meta property="og:site_name" content="这样也可以！！！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">这样也可以！！！</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">		
+			<h1> Laravel学习笔记（一）--- 依赖注入和IoC容器</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div class="col-md-9">
+	
+
+			
+
+	<!-- content -->
+	<div class="mypage">		
+	    <h2 id="依赖注入（DI）">依赖注入（DI）</h2><p>假设实现一个汽车类<code>Car</code>，它依赖一个引擎类<code>Engine</code>:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$engine</span> = <span class="keyword">new</span> Engine();</span><br><span class="line">        <span class="variable">$engine</span>-&gt;start();</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"go"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>这时如果汽车的<code>Engine</code>变为<code>TurboEngine</code>的时候，就需要修改汽车类<code>Car</code>的实现。因此为了解耦，我们需要把引擎类<code>注入</code>到汽车类中:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$engine</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(<span class="variable">$engine</span>)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;_engine = <span class="variable">$engine</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;_engine-&gt;start();</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"go"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$engine</span> = <span class="keyword">new</span> Engine();</span><br><span class="line"><span class="variable">$car</span> = <span class="keyword">new</span> Car(<span class="variable">$engine</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这样就实现了<code>Car</code>类和<code>Engine</code>类的解耦，这种方法就是<code>依赖注入（Dependency Injection）</code><br>依赖注入一般有三种方法：</p>
+<ul>
+<li>构造函数</li>
+<li>setter</li>
+<li>接口</li>
+</ul>
+<p>这种使用类似于依赖注入的方式来管理依赖，实现解耦的设计模式就是IoC模式（控制反转模式，Inversion of Control）</p>
+<p><strong>p.s. 关于IoC，<a href="http://coolshell.cn/articles/9949.html" target="_blank" rel="external">这篇</a>文章讲的比较通俗。</strong></p>
+<h2 id="IoC容器">IoC容器</h2><p>假设<code>Car</code>类变得很复杂:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$engine</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$tire</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Engine <span class="variable">$engine</span>,Tire <span class="variable">$tire</span>)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;_engine = <span class="variable">$engine</span>;</span><br><span class="line">        <span class="variable">$this</span>-&gt;_tire = <span class="variable">$tire</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;_tire-&gt;warm();</span><br><span class="line">        <span class="variable">$this</span>-&gt;_engine-&gt;start();</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"go"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$tire</span> = <span class="keyword">new</span> Tire();</span><br><span class="line"><span class="variable">$fuel</span> = <span class="keyword">new</span> Fuel();</span><br><span class="line"><span class="variable">$engine</span> = <span class="keyword">new</span> Engine(<span class="variable">$fuel</span>);</span><br><span class="line"><span class="variable">$car</span> = <span class="keyword">new</span> Car(<span class="variable">$engine</span>, <span class="variable">$tire</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这样带来的一个问题是，当我需要实例化<code>Car</code>的时候，需要首先去实例化很多它依赖的类。让这么懒的我去做这种事情是不现实的。这样就引出了IoC容器这个东西。<br>IoC容器就是用来解析类的依赖，绑定接口和实现的一个东西。说起来比较抽象，还是举个栗子：<br>Lavarel中的APP就是一个IoC容器，它是Application类的一个实例，Application类继承了Container。下面是一个Case（来自<a href="http://laravelbase.com/posts/14" target="_blank" rel="external">这里</a>）:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$tire</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$engine</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Tire <span class="variable">$tire</span>, Engine <span class="variable">$engine</span>)</span> </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;tire = <span class="variable">$tire</span>;</span><br><span class="line">        <span class="variable">$this</span>-&gt;engine = <span class="variable">$engine</span>;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tire</span> </span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Engine</span> </span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line">App::bind(<span class="string">'Car'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Car(<span class="keyword">new</span> Tire, <span class="keyword">new</span> Engine);</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">Route::get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    dd(App::make(<span class="string">'Car'</span>));  <span class="comment">//  dd是一个类似var_dump的方法</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出：</span></span><br><span class="line"> object(Car)[<span class="number">145</span>]</span><br><span class="line">  <span class="keyword">protected</span> <span class="string">'tire'</span> =&gt; </span><br><span class="line">    object(Tire)[<span class="number">143</span>]</span><br><span class="line">  <span class="keyword">protected</span> <span class="string">'engine'</span> =&gt; </span><br><span class="line">    object(Engine)[<span class="number">150</span>]</span><br></pre></td></tr></table></figure></p>
+<p><code>bind</code>方法是把<code>Car</code>绑定到容器中，当调用<code>make</code>时，就可以得到一个<code>Car</code>的实例。</p>
+<p>更NB的地方在于：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$tire</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$engine</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Tire <span class="variable">$tire</span>, Engine <span class="variable">$engine</span>)</span> </span>&#123;</span><br><span class="line">        <span class="variable">$this</span>-&gt;tire = <span class="variable">$tire</span>;</span><br><span class="line">        <span class="variable">$this</span>-&gt;engine = <span class="variable">$engine</span>;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tire</span> </span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Engine</span> </span>&#123;&#125;</span><br><span class="line"> </span><br><span class="line">Route::get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    dd(App::make(<span class="string">'Car'</span>)); </span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line"><span class="comment">//注意没有bind了</span></span><br><span class="line"><span class="comment">//输出：</span></span><br><span class="line"> object(Car)[<span class="number">152</span>]</span><br><span class="line">  <span class="keyword">protected</span> <span class="string">'tire'</span> =&gt; </span><br><span class="line">    object(Tire)[<span class="number">153</span>]</span><br><span class="line">  <span class="keyword">protected</span> <span class="string">'engine'</span> =&gt; </span><br><span class="line">    object(Engine)[<span class="number">154</span>]</span><br></pre></td></tr></table></figure></p>
+<p>这里仍然能够正常运行，因为Laravel的容器做了这些事情：</p>
+<ol>
+<li>检查用户是否绑定了Car？（如果已经绑定，就直接使用）；</li>
+<li>如果没有绑定, 就查询Car的依赖关系；</li>
+<li>解析所有Car需要的依赖关系（Tire 和 Engine）；</li>
+<li>创建Car的新实例，包含Car所依赖的所有关系；</li>
+</ol>
+<p>这里不管类多复杂，依赖层次多么深，容器都会帮你搞定依赖关系。</p>
+<h2 id="实现">实现</h2><p>这么NB的东西是怎么实现的呢？<br>应该是靠PHP的反射来做的，具体等读读源码看看。</p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2015/04/20/composer/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+</section>
+
+	
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2015-05-05 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/php/">php<span>3</span></a></li> <li><a href="/categories/php/Laravel/">Laravel<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/DI/">DI<span>1</span></a></li> <li><a href="/tags/IoC/">IoC<span>1</span></a></li> <li><a href="/tags/Laravel/">Laravel<span>1</span></a></li> <li><a href="/tags/php/">php<span>3</span></a></li> <li><a href="/tags/依赖注入/">依赖注入<span>1</span></a></li> <li><a href="/tags/反转控制/">反转控制<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#依赖注入（DI）"><span class="toc-article-text">依赖注入（DI）</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#IoC容器"><span class="toc-article-text">IoC容器</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#实现"><span class="toc-article-text">实现</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	
+
+</div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 han
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+</body>
+   </html>

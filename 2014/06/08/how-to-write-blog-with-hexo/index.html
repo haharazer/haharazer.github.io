@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>用hexo搭建静态博客 | 这样也可以！！！</title>
+  <meta name="author" content="han">
+  
+  <meta name="description" content="前几天网上乱逛发现树莓派系统Pidora 2014发布了，于是就想折腾一下换个系统玩玩。但是之前在树莓派上用typecho搭了一个博客，备份啥的又比较麻烦，而且没几篇文章在上面，干脆就试试听说很久一直没时间搞的静态博客。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="用hexo搭建静态博客"/>
+  <meta property="og:site_name" content="这样也可以！！！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">这样也可以！！！</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">		
+			<h1> 用hexo搭建静态博客</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div class="col-md-9">
+	
+
+			
+
+	<!-- content -->
+	<div class="mypage">		
+	    <p>前几天网上乱逛发现树莓派系统Pidora 2014发布了，于是就想折腾一下换个系统玩玩。<br>但是之前在树莓派上用typecho搭了一个博客，备份啥的又比较麻烦，而且没几篇文章在上面，干脆就试试听说很久一直没时间搞的静态博客。</p>
+<a id="more"></a>
+<h1 id="系统选择">系统选择</h1><p>网上搜出来很多静态博客系统，像<a href="http://jekyllcn.com/" target="_blank" rel="external">jekyll</a>、<a href="www.octopress.org/">Octopress</a>。看到有人说静态博客会随着博客数量变多，编译时间变得越来越长（可能会编译半个小时），于是就选择了据说速度很快的基于node.js的<strong><a href="http://hexo.io" target="_blank" rel="external">hexo</a></strong>。</p>
+<blockquote>
+<p>静态博客就是一个静态的博客网站，好处就是所有的页面都是静态的，不需要依赖mysql等数据库。因此静态博客系统的作用就是将你写的文章根据你设置的样式全部转化为一个个静态的页面（html）。</p>
+</blockquote>
+<h1 id="hexo安装">hexo安装</h1><p>hexo是基于node.js的，托管在github上，因此首先要安装nodejs和git<br>具体步骤可以参考官网提供的<a href="http://jekyllcn.com/docs/index.html" target="_blank" rel="external">安装方法</a></p>
+<p>nvm：</p>
+<blockquote>
+<p>步骤中提到的nvm(node version manager)是一个nodejs的版本管理工具，可以方便的安装/使用/删除某个特定版本的node</p>
+</blockquote>
+<p>npm:</p>
+<blockquote>
+<p>步骤中的npm(Node Package Manager)命令是nodejs的包管理命令，用于管理nodejs的各扩展包</p>
+</blockquote>
+<h1 id="hexo使用">hexo使用</h1><h2 id="初始化">初始化</h2><p>hexo新建博客的命令很简单：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &lt;folder&gt;</span><br><span class="line">$ <span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure></p>
+<p>执行完成后，会在当前目录下生成一些文件和文件夹。</p>
+<h2 id="写博客">写博客</h2><p>执行<code>hexo new hello-world</code>，就会在source/_post目录下生成一个hello-world.md文件（可能文件名不是这样，跟配置有关），编辑这个文件就可以开始写博客了。</p>
+<h2 id="编译">编译</h2><p>文章写完后，执行<code>hexo generate</code>或者简写<code>hexo g</code>，就会在public目录下生成整个博客站点的所有静态文件。找个地方部署这些文件，博客的搭建就完成了</p>
+<h2 id="本地调试">本地调试</h2><p>hexo提供了一个本地调试的方法，执行<code>hexo server</code>或者<code>hexo s</code>，就可以在本地启动一个http server，默认地址为localhost:4000。打开浏览器访问这个地址就可以看到具体的效果。</p>
+<h1 id="部署在github">部署在github</h1><p>github提供了一个user pages的功能，可以创建一个以<code>用户名.github.io</code>为名的repo，在其中放上一个静态页面，然后访问<a href="http://用户名.github.io即可访问该页面。" target="_blank" rel="external">http://用户名.github.io即可访问该页面。</a><br>利用这个功能，我们就可以把我们的博客托管到github上</p>
+<ol>
+<li>新建账户<br>如果没有github账号，需要先到<a href="https://github.com申请一个账号" target="_blank" rel="external">https://github.com申请一个账号</a></li>
+<li>新建repo<br>建立完账户后，新建一个public repo，repo名必须为<code>用户名.github.io</code></li>
+<li>看效果<br>随便上传一个index.html，稍等10分钟，访问<a href="http://用户名.github.io即可以看到你的页面" target="_blank" rel="external">http://用户名.github.io即可以看到你的页面</a><blockquote>
+<p>申请账号、建repo及上传的流程可以参考<a href="http://www.cnblogs.com/flyher/p/3361140.html" target="_blank" rel="external">这里</a></p>
+</blockquote>
+</li>
+<li>hexo部署<br>hexo提供直接部署到github的功能<br>在配置文件_config.yml中，增加：<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## <span class="string">Docs:</span> <span class="string">http:</span><span class="comment">//hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="string">deploy:</span></span><br><span class="line"><span class="label">  type:</span> github</span><br><span class="line"><span class="label">  repo:</span> git<span class="annotation">@github</span>.<span class="string">com:</span>用户名/用户名.github.io.git</span><br><span class="line"><span class="label">  branch:</span> master</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>然后执行<code>hexo deploy</code>或者<code>hexo d</code>，hexo就会将你generate后的public目录自动的上传到github上，直接访问就可以看到效果</p>
+<h1 id="自定义域名">自定义域名</h1><p>如果有自己的域名，而且想将域名映射过来，可以通过简单的2个步骤实现</p>
+<ol>
+<li>在hexo生成博客的source目录下新建一个文件CNAME，文件内容为你自己的域名</li>
+<li>在你的域名解析服务商处新增一个CNAME解析配置，将其指向你的<code>用户名.github.io</code>，如：<br><img src="/images/dnsdop-config.png" alt=""></li>
+</ol>
+<p>配置完成后等10分钟（跟github和你的域名解析服务商有关），你的域名就会被解析到github pages上去了。</p>
+<h1 id="遇到的问题">遇到的问题</h1><h2 id="主题">主题</h2><p>在官网上看到了hexo的<a href="https://github.com/tommy351/hexo/wiki/Themes" target="_blank" rel="external">主题列表</a>，于是忍不住就挨个打开看看，换换主题玩。<br>一开始选择了<a href="https://github.com/wuchong/jacman" target="_blank" rel="external">jacman主题</a>（基于pacman），安装完成后发现首页的摘要内容是乱码（被html转义的中文，类似&amp;#x5E6F），但是点进去的文章内容没有问题。看了各种issue也没有类似情况。<br>于是换了原始主题pacman，仍然乱码，然后看了下主题的代码，发现<code>/layout/_partial/article.ejs</code>中渲染摘要的部分代码用的是<code>&lt;%= xxxx%&gt;</code>。而<code>=</code>会对内容进行html转义，于是改成<code>&lt;%- xxx%&gt;</code>果然好了，但是又出现了一些样式问题。<br>于是又换了个主题<a href="https://github.com/wzpan/hexo-theme-freemind" target="_blank" rel="external">freemind</a>，这次一下就好了没有啥问题了。</p>
+<h2 id="代码高亮/标题">代码高亮/标题</h2><p>配置完主题，进文章扫了一下发现<a href="/2014/02/26/php-magic-method-call-and-callStatic/">有篇文章</a>的二级标题没有渲染出来，看了下markdown语法也没啥错误，于是通过删除打法不断调试，发现问题出在最后一段php代码上。<br>删了这段代码就正常，各种尝试后，发现代码最后加上<code>?&gt;</code>立马就好了，初步怀疑是代码高亮模块的问题，github上的ISSUE里有人爆出来，但是还没有定位</p>
+<hr>
+<h1 id="参考：">参考：</h1><p>[1] <a href="http://hexo.io" target="_blank" rel="external">hexo</a><br>[1] <a href="http://yangjian.me/workspace/building-blog-with-hexo/" target="_blank" rel="external">使用hexo搭建博客</a><br>[2] <a href="http://ibruce.info/2013/11/22/hexo-your-blog/" target="_blank" rel="external">hexo你的博客</a></p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2014/07/06/setup-mac-osx/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2014/04/19/how-to-install-black-mac/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+</section>
+
+	
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2014-06-08 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/hexo/">hexo<span>1</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/github/">github<span>1</span></a></li> <li><a href="/tags/hexo/">hexo<span>1</span></a></li> <li><a href="/tags/静态博客/">静态博客<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#系统选择"><span class="toc-article-text">系统选择</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#hexo安装"><span class="toc-article-text">hexo安装</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#hexo使用"><span class="toc-article-text">hexo使用</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#初始化"><span class="toc-article-text">初始化</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#写博客"><span class="toc-article-text">写博客</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#编译"><span class="toc-article-text">编译</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#本地调试"><span class="toc-article-text">本地调试</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#部署在github"><span class="toc-article-text">部署在github</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#自定义域名"><span class="toc-article-text">自定义域名</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#遇到的问题"><span class="toc-article-text">遇到的问题</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#主题"><span class="toc-article-text">主题</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#代码高亮/标题"><span class="toc-article-text">代码高亮/标题</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#参考："><span class="toc-article-text">参考：</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	
+
+</div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 han
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+</body>
+   </html>

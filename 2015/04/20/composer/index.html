@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>PHP的包管理工具Composer | 这样也可以！！！</title>
+  <meta name="author" content="han">
+  
+  <meta name="description" content="Composer是PHP的包管理工具，类似于Ruby的gem、Python的pip、Nodejs的npm，利用它可以方便的安装和管理依赖的包。作为一个PHP的依赖包管理工具，其主要提供了两个功能：
+
+依赖包安装和管理
+autoload自动加载">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="PHP的包管理工具Composer"/>
+  <meta property="og:site_name" content="这样也可以！！！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">这样也可以！！！</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">		
+			<h1> PHP的包管理工具Composer</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div class="col-md-9">
+	
+
+			
+
+	<!-- content -->
+	<div class="mypage">		
+	    <p><a href="https://getcomposer.org/" target="_blank" rel="external">Composer</a>是PHP的包管理工具，类似于Ruby的<a href="https://rubygems.org/" target="_blank" rel="external">gem</a>、Python的<a href="https://pypi.python.org/pypi/pip" target="_blank" rel="external">pip</a>、Nodejs的<a href="https://www.npmjs.com/" target="_blank" rel="external">npm</a>，利用它可以方便的安装和管理依赖的包。<br>作为一个PHP的依赖包管理工具，其主要提供了两个功能：</p>
+<ul>
+<li>依赖包安装和管理</li>
+<li>autoload自动加载</li>
+</ul>
+<a id="more"></a>
+<h1 id="Composer和Packagist">Composer和Packagist</h1><p><code>Composer</code>是由 Jordi Boggiano 和 Nils Aderman 创造的一个命令行工具，它的使命就是帮你为项目自动安装所依赖的开发包。作为一个包管理工具，当然就离不开“包”，<code>Composer</code>的默认开发包仓库就是<a href="https://packagist.org/" target="_blank" rel="external">Packagist</a>（这么优秀的一个网站的结果当然就是被墙了）。<br><code>Packagist</code>中有大量前人开发的扩展包，当然你也可以将你自己的安装包提交到上面，这样后续你开发其他项目时就可以用<code>Composer</code>安装你扩展包了。</p>
+<h1 id="Composer安装">Composer安装</h1><p>Composer依赖<code>PHP5.3.2+</code>。<br>安装很简单：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>curl -sS <span class="symbol">https:</span>/<span class="regexp">/getcomposer.org/installer</span> | php</span><br></pre></td></tr></table></figure></p>
+<p>这个命令会把<code>composer.phar</code>下载到当前目录，该文件可以在命令行下直接运行：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer<span class="class">.phar</span> help</span><br></pre></td></tr></table></figure></p>
+<p>也可以进行全局安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv composer.phar /usr/<span class="built_in">local</span>/bin/composer</span><br><span class="line">$ composer <span class="built_in">help</span></span><br></pre></td></tr></table></figure></p>
+<p>或者直接把<code>composer.phar</code>放到<code>PATH</code>环境变量中。</p>
+<h1 id="Composer使用">Composer使用</h1><h2 id="镜像">镜像</h2><p>由于众所周知的原因，Composer的默认安装包仓库访问不了，因此第一件事就是架个梯子，或者用国内的镜像仓库。<br>由于Composer发展很快，目前国内有不少可以用的镜像，比如<a href="http://pkg.phpcomposer.com/" target="_blank" rel="external">这个</a>、<a href="https://toran.reimu.io/" target="_blank" rel="external">这个</a>、还有<a href="http://comproxy.cn/" target="_blank" rel="external">这个</a>，不过这几个镜像好像都是个人维护的，所以有的时候连不上可以换换试试。<br>镜像配置方式在<a href="http://pkg.phpcomposer.com/" target="_blank" rel="external">这里</a>有很详细的说明，这里就不赘述了。</p>
+<h2 id="终于到了怎么使用了">终于到了怎么使用了</h2><p>先想一个场景，比方说我要写一个爬虫，而php自带的<code>curl</code>并不是很好用，搜了一下发现有一个库叫<code>requests</code>，是一个http请求相关的库，这时就可以用composer方便的安装这个库。<br>首先，编辑配置文件。在项目的根目录下生成一个composer.json文件，在里面写上依赖的库名称：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">require</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">rmccue/requests</span>": <span class="value"><span class="string">"&gt;=1.0"</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后，运行命令安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ composer install</span><br></pre></td></tr></table></figure></p>
+<p>完成后，<code>composer</code>就会将<code>requests</code>库安装到<code>vender/rmccue/requests</code>目录下。<br>这时候，只要把自动加载文件load进去就可以直接使用了：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">"vender/autoload.php"</span>;</span><br></pre></td></tr></table></figure></p>
+<h1 id="composer命令">composer命令</h1><p>除了<code>install</code>之外，composer还有很多其他的命令，比如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">composer init <span class="comment">//初始化，生成composer.json</span></span><br><span class="line">composer update <span class="comment">//更新composer.lock后面详细讲</span></span><br><span class="line">composer require <span class="comment">//通过命令行添加依赖包到composer.json中</span></span><br><span class="line">composer self-update <span class="comment">//更新composer版本</span></span><br><span class="line">composer dump-autoload <span class="comment">//更新autoloader，一般在更新了依赖包的时候使用</span></span><br><span class="line">等等...</span><br></pre></td></tr></table></figure></p>
+<p><code>composer</code>的命令和作用可以去<a href="http://docs.phpcomposer.com/03-cli.html" target="_blank" rel="external">这里</a>查看。</p>
+<h2 id="composer_update">composer update</h2><p>当执行<code>install</code>命令时，<code>composer</code>首先会看当前目录下是否存在<code>composer.lock</code>文件，若存在则读取该文件而不是<code>composer.json</code>。如果没有的话，则会读取<code>composer.json</code>，并在处理完成后创建<code>composer.lock</code>文件。<br>因此当修改了<code>composer.json</code>文件时，即使执行了<code>install</code>命令，composer也不会去下载新增的依赖包，这时候就需要执行<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">composer</span> update</span><br></pre></td></tr></table></figure></p>
+<p>来更新<code>composer.lock</code>文件，然后执行<code>install</code>才能真正的安装新增的依赖。<br>关于这个<code>锁文件</code>的作用，可以参考官方的<a href="http://docs.phpcomposer.com/01-basic-usage.html#composer.lock-The-Lock-File" target="_blank" rel="external">文档</a></p>
+<h1 id="composr-json">composr.json</h1><p>大多数情况下，composer是用来做依赖管理的，因此composer.json里只有<code>require</code>字段，像这样：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">require</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">monolog/monolog</span>": <span class="value"><span class="string">"1.0.*"</span></span>,</span><br><span class="line">        "<span class="attribute">rmccue/requests</span>": <span class="value"><span class="string">"&gt;=1.0"</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里面的key是包名，包括供应商名称和项目名称，用<code>/</code>分隔。<br>value是版本号，版本号有几种不同的指定方法：</p>
+<ul>
+<li><strong>确切的版本号</strong>：<code>1.0.2</code></li>
+<li><strong>范围</strong>：<code>&gt;=1.0</code> <code>&gt;=1.0,&lt;2.0</code> <code>&gt;1.0,&lt;1.1|&gt;=1.2</code>，支持的运算符：<code>&gt;</code>、<code>&gt;=</code>、<code>&lt;</code>、<code>&lt;=</code>、<code>!=</code>，<code>,</code>表示AND，<code>|</code>表示OR</li>
+<li><strong>通配符</strong>：<code>1.0.*</code>，<code>1.0.*</code>与<code>&gt;=1.0,&lt;1.1</code>是等效的</li>
+<li><strong>赋值运算符</strong>：<code>~1.2</code>，<code>~1.2</code>相当于<code>&gt;=1.2,&lt;2.0</code>，即大于1.2的二位版本，小于2.0的一位版本</li>
+</ul>
+<blockquote>
+<p>默认情况下，非确定版本的版本号是从最高位开始尝试的。如<code>1.0.*</code>会从最高的<code>1.0.99</code>(假设有)开始尝试安装</p>
+</blockquote>
+<p>关于版本号的其他信息可以查看<a href="http://docs.phpcomposer.com/01-basic-usage.html#Package-Versions" target="_blank" rel="external">官方文档</a></p>
+<p>composer.json还有很多其他的配置如项目自身的包名、描述、版本还有autoload等等（每一个项目都可以当做包来用composer发布，只要你写好了composer.json并上传上去），具体信息也可以去看下<a href="http://docs.phpcomposer.com/04-schema.html" target="_blank" rel="external">官方文档</a></p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+				
+    	<li class="prev"><a href="/2015/05/05/learn-laravel-1-di-and-ioc/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+  		
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2014/07/06/setup-vps-linux/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+</section>
+
+	
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2015-04-20 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/php/">php<span>3</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/composer/">composer<span>1</span></a></li> <li><a href="/tags/php/">php<span>3</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Composer和Packagist"><span class="toc-article-text">Composer和Packagist</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Composer安装"><span class="toc-article-text">Composer安装</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Composer使用"><span class="toc-article-text">Composer使用</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#镜像"><span class="toc-article-text">镜像</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#终于到了怎么使用了"><span class="toc-article-text">终于到了怎么使用了</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#composer命令"><span class="toc-article-text">composer命令</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#composer_update"><span class="toc-article-text">composer update</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#composr-json"><span class="toc-article-text">composr.json</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	
+
+</div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 han
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+</body>
+   </html>
