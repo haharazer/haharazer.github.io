@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Laravel学习笔记（二）--- Laravel5.1安装 | 这样也可以！！！</title>
+  <meta name="author" content="han">
+  
+  <meta name="description" content="Laravel 5.16月份的时候，Laravel正式发布了5.1这个LTS（长期支持 - long-time support）版本。这是Laravel历史上第一个提供支持的版本。理论上这个版本会在稳定性和安全上有为期3年的支持，因此今天就重新安装了一下，记录下安装的步骤。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Laravel学习笔记（二）--- Laravel5.1安装"/>
+  <meta property="og:site_name" content="这样也可以！！！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">这样也可以！！！</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">		
+			<h1> Laravel学习笔记（二）--- Laravel5.1安装</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div class="col-md-9">
+	
+
+			
+
+	<!-- content -->
+	<div class="mypage">		
+	    <h2 id="Laravel_5-1">Laravel 5.1</h2><p>6月份的时候，<code>Laravel</code>正式发布了5.1这个LTS（长期支持 - long-time support）版本。这是<code>Laravel</code>历史上第一个提供支持的版本。理论上这个版本会在稳定性和安全上有为期3年的支持，因此今天就重新安装了一下，记录下安装的步骤。</p>
+<a id="more"></a>
+<h2 id="安装">安装</h2><p>Laravel安装其实很简单，但是鉴于<code>composer</code>被墙，安装过程经常出现无法预料的问题，好在前几天<code>composer中文网</code>的镜像<a href="http://www.golaravel.com/post/packagist-composer-chinese-mirror-reloaded/" target="_blank" rel="external">重新上线</a>，目前使用来看比较稳定，安装起来相当便利。</p>
+<h3 id="composer镜像">composer镜像</h3><p>首先把composer镜像地址设置为全局的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer config -g repositories.packagist composer http://packagist.phpcomposer.com</span><br></pre></td></tr></table></figure>
+<p>如果你之前设置过镜像或者多个<code>packagist</code>的话，这个命令可能会导致配置出错，这时需要手动去改一下<code>composer</code>的全局配置，一般在<code>~/.composer/config.json</code>，改为下面这种：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">repositories</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">packagist</span>": <span class="value">&#123;</span><br><span class="line">            "<span class="attribute">type</span>": <span class="value"><span class="string">"composer"</span></span>,</span><br><span class="line">            "<span class="attribute">url</span>": <span class="value"><span class="string">"http://packagist.phpcomposer.com"</span></span><br><span class="line">        </span>&#125;</span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="全局安装">全局安装</h3><p>解决了<code>composer</code>被墙的问题，就可以全局安装<code>Laravel</code>，这样以后新建<code>Laravel</code>项目的时候也会更方便一些。<br>直接运行：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer <span class="built_in">global</span> <span class="built_in">require</span> <span class="string">"laravel/installer=~1.1"</span></span><br></pre></td></tr></table></figure>
+<p>安装完成后，需要将<code>Laravel</code>安装路径<code>(~/.composer/vendor/bin)</code>添加到<code>PATH</code>中，添加完之后就可以直接使用了</p>
+<h2 id="使用">使用</h2><h3 id="新建项目">新建项目</h3><p>运行命令：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">laravel <span class="keyword">new</span> <span class="keyword">project</span>-name</span><br></pre></td></tr></table></figure>
+<p>会出现如下提示：</p>
+<p><img src="http://7i7jpi.com1.z0.glb.clouddn.com/laravel-new-app.jpg" alt=""></p>
+<h3 id="目录结构">目录结构</h3><p>运行完成后，就会在当前目录下新建一个名为<code>project-name</code>的文件夹，文件夹的结构如下：</p>
+<p><img src="http://7i7jpi.com1.z0.glb.clouddn.com/laravel-dir.jpg" alt="dd"></p>
+<p>文件和目录用途：</p>
+<table>
+<thead>
+<tr>
+<th>目录/文件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td>应用本身的逻辑都在这个目录下</td>
+</tr>
+<tr>
+<td>artisan</td>
+<td>Laravel的自带工具，功能强大</td>
+</tr>
+<tr>
+<td>bootstrap</td>
+<td>autoloader和初始化文件目录</td>
+</tr>
+<tr>
+<td>composer.*</td>
+<td>composer相关文件</td>
+</tr>
+<tr>
+<td>config</td>
+<td>配置文件目录</td>
+</tr>
+<tr>
+<td>database</td>
+<td>数据库相关migration和seed所在目录</td>
+</tr>
+<tr>
+<td>gulpfilse.js</td>
+<td>Laravel集成gulp</td>
+</tr>
+<tr>
+<td>package.json</td>
+<td>composer相关文件</td>
+</tr>
+<tr>
+<td>phpspec.yml</td>
+<td>phpspec框架配置</td>
+</tr>
+<tr>
+<td>phpunit.xml</td>
+<td>phpunit配置</td>
+</tr>
+<tr>
+<td>public</td>
+<td>webroot/入口</td>
+</tr>
+<tr>
+<td>resources</td>
+<td>静态资源 模板</td>
+</tr>
+<tr>
+<td>server.php</td>
+<td>启动php内建webserver所需文件</td>
+</tr>
+<tr>
+<td>storage</td>
+<td>过程文件所在目录，要修改权限为777</td>
+</tr>
+<tr>
+<td>tests</td>
+<td>测试文件所在目录</td>
+</tr>
+<tr>
+<td>vendor</td>
+<td>框架依赖库所在目录</td>
+</tr>
+</tbody>
+</table>
+<h3 id="修改权限">修改权限</h3><p>由于框架运行过程中需要在storage目录生成一些缓存、session、编译模板等临时文件，因此需要将<code>storage</code>目录的权限修改为<code>777</code>：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">chmod</span> -R <span class="number">777</span> storage</span><br></pre></td></tr></table></figure>
+<h3 id="nginx配置">nginx配置</h3><p>修改nginx配置，增加laravel的虚拟主机配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">    <span class="title">root</span>   /path/to/laravel/project-name/public/;</span><br><span class="line">    <span class="title">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">    <span class="title">fastcgi_index</span>  index.php;</span><br><span class="line">    <span class="title">include</span>        fastcgi.conf;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title">location</span> / &#123;</span><br><span class="line">    <span class="title">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$query_string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问刚刚配置的nginx的host:port就可以看到新建的<code>Laravel</code>应用的页面了：<br><img src="http://7i7jpi.com1.z0.glb.clouddn.com/laravel5-index.jpg" alt=""></p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+<ul class="pagination">
+	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>上一页</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2015/05/05/learn-laravel-1-di-and-ioc/" class="alignright next">下一页<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
+</ul>
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">留言</h2>
+
+  
+</section>
+
+	
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2015-08-16 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/php/">php<span>4</span></a></li> <li><a href="/categories/php/Laravel/">Laravel<span>2</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Laravel/">Laravel<span>2</span></a></li> <li><a href="/tags/php/">php<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Laravel_5-1"><span class="toc-article-text">Laravel 5.1</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#安装"><span class="toc-article-text">安装</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#composer镜像"><span class="toc-article-text">composer镜像</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#全局安装"><span class="toc-article-text">全局安装</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#使用"><span class="toc-article-text">使用</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#新建项目"><span class="toc-article-text">新建项目</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#目录结构"><span class="toc-article-text">目录结构</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#修改权限"><span class="toc-article-text">修改权限</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#nginx配置"><span class="toc-article-text">nginx配置</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	
+
+</div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2015 han
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>.    
+</p> </footer>
+</div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+</body>
+   </html>
